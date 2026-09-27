@@ -1,0 +1,107 @@
+/* Container */
+.tab-list {
+	display: flex; /* Changed from inline-flex */
+	flex-wrap: wrap; /* Allows items to flow to the next line */
+	align-items: center;
+	gap: 0.25rem;
+	background-color: #f3f4f6;
+	padding: 0.25rem;
+	border-radius: 0.75rem;
+}
+
+/* Individual Tab */
+.tab {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	padding: 0.375rem 0.75rem;
+
+	font-family:
+		system-ui,
+		-apple-system,
+		sans-serif;
+	font-size: 0.875rem;
+	color: #4b5563;
+
+	background: transparent;
+	border: none;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: all 0.15s ease-in-out;
+}
+
+/* Hover State */
+.tab:hover {
+	color: #111827;
+}
+
+/* Active State */
+.tab.active,
+.tab[aria-selected="true"] {
+	background-color: #ffffff;
+	color: #111827;
+	box-shadow:
+		0 1px 3px 0 rgba(0, 0, 0, 0.1),
+		0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus State */
+.tab:focus-visible {
+	outline: 2px solid #2563eb;
+}
+
+/* Close button inside a tab */
+.tab-close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.125rem;
+	height: 1.125rem;
+	margin-right: -0.25rem;
+	border-radius: 9999px;
+	border: none;
+	background: transparent;
+	color: #9ca3af;
+	cursor: pointer;
+	transition: all 0.15s ease;
+	padding: 0.15rem;
+}
+
+.tab-close:hover {
+	background-color: #e5e7eb;
+	color: #111827;
+}
+
+/* Specific styling for the "+" add button */
+.tab-add {
+	color: #2563eb;
+	padding-left: 0.625rem;
+	padding-right: 0.625rem;
+}
+.tab-add:hover {
+	background-color: #e5e7eb;
+}
+
+/* Container for all content panels */
+.tab-content {
+	margin-top: 1rem;
+	padding: 5px;
+	max-height: calc(100dvh - 230px);
+	overflow-x: auto;
+}
+
+/* Individual Content Panel */
+.tab-panel {
+	display: none; /* Hidden by default */
+	font-family:
+		system-ui,
+		-apple-system,
+		sans-serif;
+	color: #374151;
+}
+
+/* Show active panel */
+.tab-panel.active {
+	display: block;
+}

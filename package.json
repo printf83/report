@@ -1,0 +1,24 @@
+{
+	"name": "report",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"homepage": "https://printf83.github.io/report",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d dist"
+	},
+	"devDependencies": {
+		"gh-pages": "^6.3.0",
+		"vite": "^8.3.0"
+	},
+	"dependencies": {
+		"file-saver": "^2.0.5",
+		"html-to-image": "^1.11.13",
+		"jspdf": "^4.2.1",
+		"jszip": "^3.10.2"
+	}
+}
