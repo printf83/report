@@ -2,24 +2,19 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/report/favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<link rel="stylesheet" href="./src/css/rainbow.css" type="text/css" />
-		<link rel="stylesheet" href="./src/css/page.css" type="text/css" />
-		<link rel="stylesheet" href="./src/css/table.css" type="text/css" />
-		<link rel="stylesheet" href="./src/css/control.css" type="text/css" />
-		<link rel="stylesheet" href="./src/css/tab.css" type="text/css" />
-		<link rel="stylesheet" href="./src/css/dialog.css" type="text/css" />
-		<link rel="stylesheet" href="./src/css/faq.css" type="text/css" />
 
-		<title>%VITE_SOURCE_LC% report</title>
+		<title>gorgon report</title>
+		<script type="module" crossorigin src="/report/assets/index-CW0SaTih.js"></script>
+		<link rel="stylesheet" crossorigin href="/report/assets/index-CGoCoGR1.css">
 	</head>
 	<body>
 		<div id="app">
 			<section id="controller">
 				<h1 class="title rainbow-text-animated">
-					%VITE_SOURCE_LC% report
+					gorgon report
 				</h1>
 				<div class="btn-container">
 					<button id="btnInfo" class="btn btn-secondary">
@@ -148,22 +143,22 @@
 							<textarea
 								id="name-correction"
 								class="form-textarea dlg-tab-main-name-correction"
-								placeholder="<wrong_name_from_salary>,<correct_name_from_%VITE_SOURCE_LC%>"
+								placeholder="<wrong_name_from_salary>,<correct_name_from_gorgon>"
 							></textarea>
 							<p class="form-helper">
 								List of worker name in company location that not
-								match real name in %VITE_SOURCE_LC% system.
+								match real name in gorgon system.
 							</p>
 							<p class="form-helper">
 								CSV Format:
 								<code
-									>&lt;wrong_name_in_salary&gt;,&lt;correct_name_in_%VITE_SOURCE_LC%&gt;</code
+									>&lt;wrong_name_in_salary&gt;,&lt;correct_name_in_gorgon&gt;</code
 								>
 							</p>
 						</div>
 						<div class="form-group">
 							<label for="location-source" class="form-label"
-								>%VITE_SOURCE_UC% Location</label
+								>GORGON Location</label
 							>
 							<textarea
 								id="location-source"
@@ -174,10 +169,10 @@
 								List of worker that not listed in company
 								location. Source:
 								<a
-									href="%VITE_DATA_1_URL%"
+									href="https://www.example-gorgon/1"
 									target="_blank"
 									rel="noopener noreferrer"
-									>%VITE_DATA_1_TITLE%</a
+									>Senarai Keputusan Tapisan</a
 								>
 							</p>
 							<p class="form-helper">
@@ -335,7 +330,7 @@
 		</dialog>
 
 		<dialog id="dlgConfirm" class="dialog" style="width: 400px">
-			<div class="dialog-title">%VITE_SOURCE_LC% report</div>
+			<div class="dialog-title">gorgon report</div>
 			<div class="dialog-body">Are you sure to remove this company?</div>
 			<div class="dialog-action">
 				<div class="btn-container">
@@ -405,10 +400,10 @@
 					<p class="form-helper">
 						Source:
 						<a
-							href="%VITE_DATA_2_URL%"
+							href="https://www.example-gorgon/2"
 							target="_blank"
 							rel="noopener noreferrer"
-							>%VITE_DATA_2_TITLE%</a
+							>Senarai Permohonan Tapisan</a
 						>
 					</p>
 					<p class="form-helper">
@@ -430,10 +425,10 @@
 					<p class="form-helper">
 						Source:
 						<a
-							href="%VITE_DATA_1_URL%"
+							href="https://www.example-gorgon/1"
 							target="_blank"
 							rel="noopener noreferrer"
-							>%VITE_DATA_1_TITLE%</a
+							>Senarai Keputusan Tapisan</a
 						>,
 					</p>
 					<p class="form-helper">
@@ -455,10 +450,10 @@
 					<p class="form-helper">
 						Source:
 						<a
-							href="%VITE_DATA_3_URL%"
+							href="https://www.example-gorgon/3"
 							target="_blank"
 							rel="noopener noreferrer"
-							>%VITE_DATA_3_TITLE%</a
+							>Senarai Pengawal Terlatih</a
 						>
 					</p>
 					<p class="form-helper">
@@ -605,7 +600,7 @@
 							<p>
 								You can view the source code on
 								<a
-									href="%VITE_GITHUB_URL%"
+									href="https://github.com/printf83/report"
 									target="_blank"
 									rel="noopener noreferrer"
 									>GitHub</a
@@ -616,6 +611,5 @@
 				</div>
 			</div>
 		</template>
-		<script type="module" src="/src/main.js"></script>
 	</body>
 </html>
