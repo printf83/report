@@ -34,7 +34,7 @@
 								d="M444-288h72v-240h-72v240Zm61.5-322.29q10.5-10.29 10.5-25.5t-10.29-25.71q-10.29-10.5-25.5-10.5t-25.71 10.29q-10.5 10.29-10.5 25.5t10.29 25.71q10.29 10.5 25.5 10.5t25.71-10.29ZM480.28-96Q401-96 331-126t-122.5-82.5Q156-261 126-330.96t-30-149.5Q96-560 126-629.5q30-69.5 82.5-122T330.96-834q69.96-30 149.5-30t149.04 30q69.5 30 122 82.5T834-629.28q30 69.73 30 149Q864-401 834-331t-82.5 122.5Q699-156 629.28-126q-69.73 30-149 30Zm-.28-72q130 0 221-91t91-221q0-130-91-221t-221-91q-130 0-221 91t-91 221q0 130 91 221t221 91Zm0-312Z"
 							/>
 						</svg>
-						Info
+						FAQ
 					</button>
 
 					<button
@@ -491,7 +491,7 @@
 			<div class="faq-container">
 				<div class="faq-list">
 					<!-- Item 1 -->
-					<details class="faq-item" open>
+					<details class="faq-item" name="faq-accordion" open>
 						<summary class="faq-question">
 							<span
 								>What is the primary purpose of this
@@ -515,7 +515,7 @@
 					</details>
 
 					<!-- Item 2 -->
-					<details class="faq-item">
+					<details class="faq-item" name="faq-accordion">
 						<summary class="faq-question">
 							<span>Is my data safe and secure?</span>
 						</summary>
@@ -549,8 +549,45 @@
 						</div>
 					</details>
 
+					<!-- Item 5 -->
+					<details class="faq-item" name="faq-accordion">
+						<summary class="faq-question">
+							<span
+								>Is this website an official government
+								portal?</span
+							>
+						</summary>
+						<div class="faq-answer">
+							<p>
+								<b>No.</b> This website is an
+								<b>independent, unofficial utility tool</b>
+								created solely to assist users in compiling
+								reports locally.
+							</p>
+							<ul class="faq-features">
+								<li>
+									<b>No Affiliation:</b> This project is
+									completely independent and is
+									<b
+										>NOT affiliated with, endorsed by, or
+										connected to</b
+									>
+									any government agency, ministry, or
+									corporate vendor.
+								</li>
+								<li>
+									<b>No Government Data Stored:</b> This tool
+									runs purely on open-source code inside your
+									web browser. It does not fetch, store, or
+									transmit data to or from any official
+									government servers.
+								</li>
+							</ul>
+						</div>
+					</details>
+
 					<!-- Item 3 -->
-					<details class="faq-item">
+					<details class="faq-item" name="faq-accordion">
 						<summary class="faq-question">
 							<span>How do I use this platform?</span>
 						</summary>
@@ -560,7 +597,7 @@
 					</details>
 
 					<!-- Item 4 -->
-					<details class="faq-item">
+					<details class="faq-item" name="faq-accordion">
 						<summary class="faq-question">
 							<span>Where can I find the source code?</span>
 						</summary>
