@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" href="./src/css/rainbow.css" type="text/css" />
+		<link rel="stylesheet" href="./src/css/page.css" type="text/css" />
+		<link rel="stylesheet" href="./src/css/table.css" type="text/css" />
+		<link rel="stylesheet" href="./src/css/control.css" type="text/css" />
+		<link rel="stylesheet" href="./src/css/tab.css" type="text/css" />
+		<link rel="stylesheet" href="./src/css/dialog.css" type="text/css" />
+		<link rel="stylesheet" href="./src/css/faq.css" type="text/css" />
+
+		<title>%VITE_SOURCE_LC% report</title>
+	</head>
+	<body>
+		<div id="app">
+			<section id="controller">
+				<h1 class="title rainbow-text-animated">
+					%VITE_SOURCE_LC% report
+				</h1>
+				<div class="btn-container">
+					<button id="btnInfo" class="btn btn-secondary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M444-288h72v-240h-72v240Zm61.5-322.29q10.5-10.29 10.5-25.5t-10.29-25.71q-10.29-10.5-25.5-10.5t-25.71 10.29q-10.5 10.29-10.5 25.5t10.29 25.71q10.29 10.5 25.5 10.5t25.71-10.29ZM480.28-96Q401-96 331-126t-122.5-82.5Q156-261 126-330.96t-30-149.5Q96-560 126-629.5q30-69.5 82.5-122T330.96-834q69.96-30 149.5-30t149.04 30q69.5 30 122 82.5T834-629.28q30 69.73 30 149Q864-401 834-331t-82.5 122.5Q699-156 629.28-126q-69.73 30-149 30Zm-.28-72q130 0 221-91t91-221q0-130-91-221t-221-91q-130 0-221 91t-91 221q0 130 91 221t221 91Zm0-312Z"
+							/>
+						</svg>
+						Info
+					</button>
+
+					<button
+						id="btnEditor"
+						class="btn btn-secondary"
+						title="Ctrl + E"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M216-144q-29.7 0-50.85-21.15Q144-186.3 144-216v-528q0-30.11 21-51.56Q186-817 216-816h346l-72 72H216v528h528v-274l72-72v346q0 29.7-21.15 50.85Q773.7-144 744-144H216Zm264-336Zm-96 96v-153l354-354q11-11 24-16t26.5-5q14.4 0 27.45 5 13.05 5 23.99 15.78L891-840q11 11 16 24t5 27q0 14-5.02 27.09Q901.96-748.83 891-738L537-384H384Zm456-405-51-51 51 51ZM456-456h51l231-231-25-26-26-25-231 231v51Zm257-257-26-25 26 25 25 26-25-26Z"
+							/>
+						</svg>
+						Edit
+					</button>
+					<button id="btnPDF" class="btn btn-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M480-336 288-528l51-51 105 105v-342h72v342l105-105 51 51-192 192ZM263.72-192Q234-192 213-213.15T192-264v-72h72v72h432v-72h72v72q0 29.7-21.16 50.85Q725.68-192 695.96-192H263.72Z"
+							/>
+						</svg>
+						PDF
+					</button>
+					<button
+						id="btnPrint"
+						class="btn btn-primary"
+						title="Ctrl + P"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M648-624v-120H312v120h-72v-192h480v192h-72Zm-480 72h625-625Zm539.79 96q15.21 0 25.71-10.29t10.5-25.5q0-15.21-10.29-25.71t-25.5-10.5q-15.21 0-25.71 10.29t-10.5 25.5q0 15.21 10.29 25.71t25.5 10.5ZM648-216v-144H312v144h336Zm72 72H240v-144H96v-240q0-40 28-68t68-28h576q40 0 68 28t28 68v240H720v144Zm73-216v-153.67Q793-530 781-541t-28-11H206q-16.15 0-27.07 11.04Q168-529.92 168-513.6V-360h72v-72h480v72h73Z"
+							/>
+						</svg>
+						Print
+					</button>
+				</div>
+			</section>
+
+			<section id="result"></section>
+		</div>
+
+		<dialog id="dlgEditor" class="dialog">
+			<div class="dialog-body">
+				<!-- Tab Buttons -->
+				<div class="tab-list dlg-tab-list" role="tablist">
+					<div
+						class="tab active dlg-tab-main"
+						role="tab"
+						aria-selected="true"
+						aria-controls="panel-main"
+						id="tab-main"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M624-192v-252h240v252H624ZM408-516v-252h456v252H408ZM96-192v-252h456v252H96Zm0-324v-252h240v252H96Zm384-72h312v-108H480v108ZM168-264h312v-108H168v108Zm528 0h96v-108h-96v108ZM168-588h96v-108h-96v108Zm312 0Zm0 216Zm216 0ZM264-588Z"
+							/>
+						</svg>
+						Main
+					</div>
+
+					<div class="tab dlg-tab-add" role="tab">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M444-444H240v-72h204v-204h72v204h204v72H516v204h-72v-204Z"
+							/>
+						</svg>
+					</div>
+				</div>
+
+				<!-- Tab Content Panels -->
+				<div class="tab-content dlg-tab-content">
+					<div
+						class="tab-panel active"
+						id="panel-main"
+						role="tabpanel"
+						aria-labelledby="tab-main"
+					>
+						<div class="form-group">
+							<label for="name-correction" class="form-label"
+								>Name Correction</label
+							>
+							<textarea
+								id="name-correction"
+								class="form-textarea dlg-tab-main-name-correction"
+								placeholder="<wrong_name_from_salary>,<correct_name_from_%VITE_SOURCE_LC%>"
+							></textarea>
+							<p class="form-helper">
+								List of worker name in company location that not
+								match real name in %VITE_SOURCE_LC% system.
+							</p>
+							<p class="form-helper">
+								CSV Format:
+								<code
+									>&lt;wrong_name_in_salary&gt;,&lt;correct_name_in_%VITE_SOURCE_LC%&gt;</code
+								>
+							</p>
+						</div>
+						<div class="form-group">
+							<label for="location-source" class="form-label"
+								>%VITE_SOURCE_UC% Location</label
+							>
+							<textarea
+								id="location-source"
+								class="form-textarea dlg-tab-main-location-source"
+								placeholder="<name>,<location>"
+							></textarea>
+							<p class="form-helper">
+								List of worker that not listed in company
+								location. Source:
+								<a
+									href="%VITE_DATA_1_URL%"
+									target="_blank"
+									rel="noopener noreferrer"
+									>%VITE_DATA_1_TITLE%</a
+								>
+							</p>
+							<p class="form-helper">
+								CSV Format:
+								<code>&lt;name&gt;,&lt;location&gt;</code>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="dialog-actions">
+				<!-- Search Bar Header -->
+				<div class="search-bar">
+					<input
+						type="text"
+						class="form-input dlg-search-input"
+						placeholder="Search text..."
+					/>
+					<button
+						type="button"
+						title="Previous match"
+						class="dlg-search-prev"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M576-240 336-480l240-240 51 51-189 189 189 189-51 51Z"
+							/>
+						</svg>
+					</button>
+					<button
+						type="button"
+						title="Next match"
+						class="dlg-search-next"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M522-480 333-669l51-51 240 240-240 240-51-51 189-189Z"
+							/>
+						</svg>
+					</button>
+					<span class="match-counter dlg-search-counter">0 of 0</span>
+				</div>
+
+				<div class="btn-container">
+					<button class="btn btn-danger btn-dlg-reset">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="20px"
+							viewBox="0 -960 960 960"
+							width="20px"
+							fill="currentColor"
+						>
+							<path
+								d="M480-96q-160 0-272-112T96-480h72q0 130 91 221t221 91q130 0 221-91t91-221q0-130-91-221t-221-91q-80 0-150 38T217-648h119v72H108q33-128 136.5-208T480-864q80 0 149.5 30t122 82.5Q804-699 834-629.5t30 149q0 79.5-30 149.5t-82.5 122.5Q699-156 629.5-126T480-96Zm100-248L444-480v-192h72v162l115 115-51 51Z"
+							/>
+						</svg>
+						Reset
+					</button>
+
+					<div>
+						<button
+							class="btn btn-square btn-secondary btn-dlg-hide"
+							title="Hide"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								height="20px"
+								viewBox="0 -960 960 960"
+								width="20px"
+								fill="currentColor"
+							>
+								<path
+									d="M432-432v240h-72v-168H192v-72h240Zm168-336v168h168v72H528v-240h72Z"
+								/>
+							</svg>
+						</button>
+						<button
+							class="btn btn-square btn-secondary btn-dlg-download"
+							title="Download ZIP"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								height="20px"
+								viewBox="0 -960 960 960"
+								width="20px"
+								fill="currentColor"
+							>
+								<path
+									d="M480-336 288-528l51-51 105 105v-342h72v342l105-105 51 51-192 192ZM263.72-192Q234-192 213-213.15T192-264v-72h72v72h432v-72h72v72q0 29.7-21.16 50.85Q725.68-192 695.96-192H263.72Z"
+								/>
+							</svg>
+						</button>
+						<button
+							class="btn btn-square btn-secondary btn-dlg-upload-zip"
+							title="Upload ZIP"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								height="20px"
+								viewBox="0 -960 960 960"
+								width="20px"
+								fill="currentColor"
+							>
+								<path
+									d="M648-456v-72h72v72h-72Zm0 72h-72v-72h72v72Zm0 72v-72h72v72h-72ZM450-600l-96-96H168v432h408v-48h72v48h144v-336H648v72h-72v-72H450ZM168-192q-29 0-50.5-21.5T96-264v-432q0-29.7 21.5-50.85Q139-768 168-768h216l96 96h312q29.7 0 50.85 21.15Q864-629.7 864-600v336q0 29-21.15 50.5T792-192H168Zm0-72v-432 432Z"
+								/>
+							</svg>
+						</button>
+						<button
+							class="btn btn-square btn-secondary btn-dlg-upload-dir"
+							title="Upload Directory"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								height="20px"
+								viewBox="0 -960 960 960"
+								width="20px"
+								fill="currentColor"
+							>
+								<path
+									d="M168-192q-29 0-50.5-21.5T96-264v-432q0-29.7 21.5-50.85Q139-768 168-768h216l96 96h312q29.7 0 50.85 21.15Q864-629.7 864-600v336q0 29-21.15 50.5T792-192H168Zm0-72h624v-336H450l-96-96H168v432Zm0 0v-432 432Z"
+								/>
+							</svg>
+						</button>
+						<button class="btn btn-primary btn-dlg-save">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								height="20px"
+								viewBox="0 -960 960 960"
+								width="20px"
+								fill="currentColor"
+							>
+								<path
+									d="M816-672v456q0 29.7-21.15 50.85Q773.7-144 744-144H216q-29.7 0-50.85-21.15Q144-186.3 144-216v-528q0-29.7 21.15-50.85Q186.3-816 216-816h456l144 144Zm-72 30L642-744H216v528h528v-426ZM556.5-283.5Q588-315 588-360t-31.5-76.5Q525-468 480-468t-76.5 31.5Q372-405 372-360t31.5 76.5Q435-252 480-252t76.5-31.5ZM264-552h336v-144H264v144Zm-48-77v413-528 115Z"
+								/>
+							</svg>
+							Save
+						</button>
+					</div>
+				</div>
+			</div>
+		</dialog>
+
+		<dialog id="dlgConfirm" class="dialog" style="width: 400px">
+			<div class="dialog-title">%VITE_SOURCE_LC% report</div>
+			<div class="dialog-body">Are you sure to remove this company?</div>
+			<div class="dialog-action">
+				<div class="btn-container">
+					<div>
+						<label class="checkbox check-dlg">
+							<input type="checkbox" class="checkbox" />
+							<span>Done backup</span>
+						</label>
+					</div>
+					<div>
+						<button
+							class="btn btn-square btn-secondary btn-dlg-cancel"
+						>
+							Cancel
+						</button>
+						<button
+							class="btn btn-square btn-danger btn-dlg-continue"
+						>
+							Yes, delete
+						</button>
+					</div>
+				</div>
+			</div>
+		</dialog>
+
+		<!-- Template for dynamic Tabs -->
+		<template id="tab-template">
+			<div class="tab tab-data" role="tab" aria-selected="false">
+				<span class="tab-label"></span>
+				<button class="tab-close" title="Close tab">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						height="20px"
+						viewBox="0 -960 960 960"
+						width="20px"
+						fill="currentColor"
+					>
+						<path
+							d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+						/>
+					</svg>
+				</button>
+			</div>
+		</template>
+
+		<!-- Template for dynamic Panels -->
+		<template id="panel-template">
+			<div class="tab-panel tab-panel-data" role="tabpanel">
+				<div class="form-group">
+					<label class="form-label label-company">Company</label>
+					<input
+						type="text"
+						class="form-input input-company"
+						placeholder="Company Name"
+					/>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label label-vetting-request"
+						>Vetting Request</label
+					>
+					<textarea
+						class="form-textarea input-vetting-request"
+						placeholder="<bil>,<no_rujukan>,<nama>,<nokp>,<status>,<aktiviti>"
+					></textarea>
+
+					<p class="form-helper">
+						Source:
+						<a
+							href="%VITE_DATA_2_URL%"
+							target="_blank"
+							rel="noopener noreferrer"
+							>%VITE_DATA_2_TITLE%</a
+						>
+					</p>
+					<p class="form-helper">
+						CSV Format:
+						<code
+							>&lt;bil&gt;,&lt;no_rujukan&gt;,&lt;nama&gt;,&lt;nokp&gt;,&lt;status&gt;,&lt;aktiviti&gt;</code
+						>
+					</p>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label label-vetting-result"
+						>Vetting Result</label
+					>
+					<textarea
+						class="form-textarea input-vetting-result"
+						placeholder="<bil>,<no_rujukan>,<nama>,<nokp>,<jenis>,<status>,<aktiviti>"
+					></textarea>
+					<p class="form-helper">
+						Source:
+						<a
+							href="%VITE_DATA_1_URL%"
+							target="_blank"
+							rel="noopener noreferrer"
+							>%VITE_DATA_1_TITLE%</a
+						>,
+					</p>
+					<p class="form-helper">
+						CSV Format:
+						<code
+							>&lt;bil&gt;,&lt;no_rujukan&gt;,&lt;nama&gt;,&lt;nokp&gt;,&lt;jenis&gt;,&lt;status&gt;,&lt;aktiviti&gt;</code
+						>
+					</p>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label label-csg-attend"
+						>CSG Attend</label
+					>
+					<textarea
+						class="form-textarea input-csg-attend"
+						placeholder="<bil>,<nama>,<lokasi_latihan>,<tarikh_mula>,<tarikh_tamat>,<no_siri>"
+					></textarea>
+					<p class="form-helper">
+						Source:
+						<a
+							href="%VITE_DATA_3_URL%"
+							target="_blank"
+							rel="noopener noreferrer"
+							>%VITE_DATA_3_TITLE%</a
+						>
+					</p>
+					<p class="form-helper">
+						CSV Format:
+						<code
+							>&lt;bil&gt;,&lt;nama&gt;,&lt;lokasi_latihan&gt;,&lt;tarikh_mula&gt;,&lt;tarikh_tamat&gt;,&lt;no_siri&gt;</code
+						>
+					</p>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label label-location">Location</label>
+					<textarea
+						class="form-textarea input-location"
+						placeholder="<name>,<location>"
+					></textarea>
+					<p class="form-helper">
+						Source:
+						<code>Company account department</code>
+					</p>
+					<p class="form-helper">
+						CSV Format:
+						<code>&lt;name&gt;,&lt;location&gt;</code>
+					</p>
+				</div>
+			</div>
+		</template>
+
+		<template id="faq-template">
+			<div class="faq-container">
+				<div class="faq-list">
+					<!-- Item 1 -->
+					<details class="faq-item" open>
+						<summary class="faq-question">
+							<span
+								>What is the primary purpose of this
+								platform?</span
+							>
+						</summary>
+						<div class="faq-answer">
+							<p>
+								This platform is specifically designed to
+								simplify and accelerate tasks for
+								<b>Administrators / Clerks</b> in managing and
+								generating executive reports for
+								<b>Management / Employers</b>.
+							</p>
+							<p>
+								The system automatically aggregates data from
+								various separate sources into a single,
+								comprehensive, print-ready report.
+							</p>
+						</div>
+					</details>
+
+					<!-- Item 2 -->
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span>Is my data safe and secure?</span>
+						</summary>
+						<div class="faq-answer">
+							<p>
+								<b>Yes, your data is completely safe.</b> This
+								system is built on a
+								<i>Serverless</i> architecture (HTML, CSS, and
+								JavaScript only) with no external server
+								integration.
+							</p>
+							<ul class="faq-features">
+								<li>
+									<b>Local Storage:</b> Stored exclusively
+									within your computer's <i>browser cache</i>.
+								</li>
+								<li>
+									<b>Security & Encryption:</b> Data is
+									secured with encryption technology to
+									prevent unauthorized access.
+								</li>
+								<li>
+									<b>Full Control:</b> You can download a
+									backup copy and re-upload it at any time.
+								</li>
+							</ul>
+							<p>
+								No information is ever transferred outside your
+								browser environment.
+							</p>
+						</div>
+					</details>
+
+					<!-- Item 3 -->
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span>How do I use this platform?</span>
+						</summary>
+						<div class="faq-answer">
+							<p>%ITEM_3%</p>
+						</div>
+					</details>
+
+					<!-- Item 4 -->
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span>Where can I find the source code?</span>
+						</summary>
+						<div class="faq-answer">
+							<p>
+								You can view the source code on
+								<a
+									href="%VITE_GITHUB_URL%"
+									target="_blank"
+									rel="noopener noreferrer"
+									>GitHub</a
+								>.
+							</p>
+						</div>
+					</details>
+				</div>
+			</div>
+		</template>
+		<script type="module" src="/src/main.js"></script>
+	</body>
+</html>

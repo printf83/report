@@ -1,0 +1,208 @@
+table.output {
+	border-collapse: collapse;
+	font-size: x-small;
+	line-height: 1.5;
+	table-layout: fixed;
+	width: 100%;
+	page-break-after: always;
+}
+
+table.output caption {
+	margin-bottom: 0.5rem;
+}
+
+table.output caption div {
+	font-size: x-small;
+	text-align: left;
+	margin-top: 0.3rem;
+	line-height: 2;
+}
+
+table.output caption div span {
+	display: inline-block;
+	padding: 0 5px;
+	border-radius: 3px;
+	line-height: 1.5;
+	margin-right: 1px;
+}
+
+table.output caption div span.label {
+	width: 4.5rem;
+	padding-left: 0;
+}
+
+table.output caption h1 {
+	margin: 0 0 0.5rem 0;
+	width: 100%;
+	text-decoration: underline;
+	font-size: 1rem;
+}
+
+table.output thead tr {
+	background-color: rgba(202, 199, 199, 0.795);
+}
+
+table.output td,
+table.output th {
+	padding: 1px 5px;
+	border: 1px solid rgb(58, 58, 58);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table.output th:not(:first-child) {
+	cursor: pointer;
+	position: relative;
+}
+
+table.output th:not(:first-child)::after {
+	font-size: 0.75em;
+	position: absolute;
+	right: 0;
+	top: 1px;
+}
+
+table.output th:not(:first-child)[data-sort="desc"]::after {
+	top: 0;
+}
+
+/* Common indicator styling */
+th[data-sort]::after {
+	content: "";
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+	background-color: currentColor;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+}
+
+/* Ascending (Z-A / Up Arrow) */
+th[data-sort="desc"]::after {
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M444-240v-294L339-429l-51-51 192-192 192 192-51 51-105-105v294h-72Z'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M444-240v-294L339-429l-51-51 192-192 192 192-51 51-105-105v294h-72Z'/%3E%3C/svg%3E");
+}
+
+/* Descending (A-Z / Down Arrow) */
+th[data-sort="asc"]::after {
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-288 288-480l51-51 105 105v-294h72v294l105-105 51 51-192 192Z'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-288 288-480l51-51 105 105v-294h72v294l105-105 51 51-192 192Z'/%3E%3C/svg%3E");
+}
+
+table.output tr td:nth-child(2),
+table.output tr td:nth-child(4) {
+	text-align: left;
+}
+
+table.output span.success,
+table.output td.success,
+table.output tr.success,
+table.output tr.vettingPassAndCsgAttend {
+	background-color: rgba(210, 243, 210, 0.185);
+	color: rgb(13, 94, 13);
+}
+
+table.output span.danger,
+table.output td.danger,
+table.output tr.danger,
+table.output tr.vettingFail,
+table.output tr.overAge {
+	background-color: rgba(245, 188, 188, 0.322);
+	color: rgb(141, 0, 0);
+}
+
+table.output span.warning,
+table.output td.warning,
+table.output tr.warning,
+table.output tr.vettingPassAndCsgMiss {
+	background-color: rgba(240, 237, 202, 0.322);
+	color: rgb(141, 63, 0);
+}
+
+table.output span.primary,
+table.output td.primary,
+table.output tr.primary {
+	background-color: rgba(202, 228, 240, 0.322);
+	color: rgb(0, 26, 141);
+}
+
+table.output span.info,
+table.output td.info,
+table.output tr.info,
+table.output tr.vettingRequestAndCsgAttend {
+	background-color: rgba(202, 239, 240, 0.322);
+	color: rgb(0, 101, 141);
+}
+
+table.output tr[class] td[class] {
+	background-color: transparent;
+	color: inherit;
+}
+
+div.group.vettingPass table.output tr.vettingPass td,
+div.group.vettingFail table.output tr.vettingFail td,
+div.group.vettingRequest table.output tr.vettingRequest td,
+div.group.csgAttend table.output tr.csgAttend td,
+div.group.csgZero table.output tr.csgZero td,
+div.group.csgMiss table.output tr.csgMiss td,
+div.group.overAge table.output tr.overAge td,
+div.group.notInLocation table.output tr.notInLocation td,
+div.group.vettingPassAndCsgAttend table.output tr.vettingPassAndCsgAttend td,
+div.group.vettingPassAndCsgMiss table.output tr.vettingPassAndCsgMiss td,
+div.group.vettingRequestAndCsgAttend
+	table.output
+	tr.vettingRequestAndCsgAttend
+	td {
+	font-weight: bold;
+	text-shadow: -1px -1px 2px rgba(123, 118, 118, 0.2);
+}
+
+table.output span[data-type][data-value="true"] {
+	font-weight: bold;
+	text-shadow: -1px -1px 2px rgba(123, 118, 118, 0.2);
+}
+
+table.output span[data-type][data-value="true"] {
+	border-width: 1.5px;
+}
+
+table.output span[data-type]:hover {
+	cursor: pointer;
+}
+
+table.output span.success {
+	border: 1px solid rgb(13, 94, 13);
+}
+
+table.output span.danger {
+	border: 1px solid rgb(141, 0, 0);
+}
+
+table.output span.warning {
+	border: 1px solid rgb(141, 63, 0);
+}
+
+table.output span.primary {
+	border: 1px solid rgb(0, 26, 141);
+}
+
+table.output span.info {
+	border: 1px solid rgb(0, 120, 141);
+}
+
+table.output span.dark {
+	font-size: xx-small;
+	text-transform: lowercase;
+	display: inline-block;
+	border: none;
+	border-radius: 3px;
+	padding: 0px 3px;
+}
+
+table.output .text-danger {
+	font-weight: bold;
+	color: red !important;
+}

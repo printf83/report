@@ -1,0 +1,71 @@
+/* Container */
+.faq-container {
+	color: #1e293b;
+}
+
+.faq-header {
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+
+/* Accordion Card */
+.faq-item {
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	margin-bottom: 0.5rem;
+	overflow: hidden;
+}
+
+/* Question Header */
+.faq-question {
+	padding: 0.5rem 0.75rem;
+	font-weight: 600;
+	cursor: pointer;
+	background: #ffffff;
+}
+
+.faq-question:hover {
+	background: #f1f5f9;
+}
+
+/* 1. Remove ugly default browser arrows */
+.faq-question {
+	list-style: none; /* Removes arrow in Firefox */
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.faq-question::-webkit-details-marker {
+	display: none; /* Removes arrow in Chrome/Safari */
+}
+
+/* 2. Add custom arrow icon */
+.faq-question::after {
+	content: "❯";
+	font-size: 0.8rem;
+	color: #2563eb;
+	transition: transform 0.2s ease;
+}
+
+/* 3. Rotate arrow 90 degrees when open */
+.faq-item[open] .faq-question::after {
+	transform: rotate(90deg);
+}
+
+/* Answer Body */
+.faq-answer {
+	padding: 0.5rem 0.75rem;
+	border-top: 1px solid #e2e8f0;
+	color: #475569;
+}
+
+.faq-answer p {
+	margin: 0 0 0.5rem 0;
+}
+
+.faq-answer p:last-child {
+	margin-bottom: 0;
+}
