@@ -7,7 +7,6 @@ export function csgAttendCsvToArray(csv) {
 		.map((line) => {
 			if (!line.trim()) return null;
 
-			// Jangan guna .match(), terus split menggunakan regex lookahead untuk mengekalkan ruangan kosong (,,)
 			const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
 			if (parts && parts.length === 6) {

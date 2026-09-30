@@ -1,5 +1,6 @@
 import {
 	convertDictionaryToTranslator,
+	extractPart,
 	splitCsvLine,
 	translateDictionary,
 } from "./util";
@@ -9,7 +10,7 @@ export function vettingRequestCsvToArray(csv) {
 
 	return lines
 		.map((line) => {
-			const parts = line.split(",").map((item) => item.trim());
+			const parts = extractPart(line);
 
 			if (parts && parts.length === 6) {
 				return {

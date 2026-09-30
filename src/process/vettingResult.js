@@ -1,11 +1,11 @@
-import { splitCsvLine } from "./util";
+import { splitCsvLine, extractPart } from "./util";
 
 export function vettingResultCsvToArray(csv) {
 	const lines = splitCsvLine(csv);
 
 	return lines
 		.map((line) => {
-			const parts = line.split(",").map((item) => item.trim());
+			const parts = extractPart(line);
 
 			if (parts && parts.length === 7) {
 				return {

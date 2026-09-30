@@ -18,6 +18,10 @@ export function splitCsvLine(csv) {
 		});
 }
 
+export function extractPart(line) {
+	return line.split(",").map((item) => item.trim().replace(/^"|"$/g, ""));
+}
+
 export function tdVetting(vetting) {
 	if (vetting === "LULUS") {
 		return ["success"];
