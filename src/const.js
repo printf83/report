@@ -13,7 +13,7 @@ export const TABLE_TITLE_ROWS = () => {
 export const MAX_ROWS_PER_PAGE = () => {
 	switch (CURRENT_BROWSER) {
 		case "firefox":
-			return 65;
+			return 70;
 		default:
 			return 65;
 	}

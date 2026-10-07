@@ -11,7 +11,7 @@ import {
 
 const sourceText = `<span class="dark danger">${import.meta.env.VITE_SOURCE_UC}</span>`;
 
-export function buildTable(company, data) {
+export function buildTable(company, data, dataAll, title = "all") {
 	// 1. Bina colgroup
 	const tableColgroup = `
 		<col style="width:30px"/>
@@ -125,7 +125,10 @@ export function buildTable(company, data) {
     			`;
 	});
 	// 4. Bina caption
-	const tableCaption = `
+	let tableCaption = "";
+
+	if (title === "all") {
+		tableCaption = `
             <h1>Senarai Tapisan &amp; CSG PK ${company} di dalam sistem ${import.meta.env.VITE_SOURCE_UC} pada ${new Date().toLocaleDateString("en-GB")}</h1>
             <div>
                 ${spanLabel("Jumlah PK")} 	:	${spanValue(report.totalWorker, "Orang PK", "primary")}<br/>
@@ -147,6 +150,14 @@ export function buildTable(company, data) {
 
 
             </div>`;
+	} else {
+		tableCaption = `
+            <h1>Senarai ${title} PK ${company} di dalam sistem ${import.meta.env.VITE_SOURCE_UC} pada ${new Date().toLocaleDateString("en-GB")}</h1>
+            <div>
+                ${spanLabel("Jumlah PK")} 	:	${spanValue(`${report.totalWorker} daripada ${dataAll.length}`, "Orang PK", "primary")}<br/>
+				${spanLabel("Peratus")} 	:	${spanValue(Math.floor((report.totalWorker / dataAll.length) * 100), `% ${title}`, "primary")}<br/>
+            </div>`;
+	}
 
 	// 5. Masukkan ke dalam result.innerHTML
 

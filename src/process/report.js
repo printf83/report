@@ -93,11 +93,5 @@ export function processResult(data) {
 	});
 
 	// Tukar format Map kembali kepada Array biasa dan susun mengikut name (A-Z)
-	return Array.from(mapWorker.values()).sort((a, b) => {
-		return (
-			a.location.localeCompare(b.location) ||
-			b.csg.localeCompare(a.csg) ||
-			a.name.localeCompare(b.name)
-		);
-	});
+	return Array.from(mapWorker.values());
 }

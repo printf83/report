@@ -27,20 +27,43 @@ export const buildResult = (container, data) => {
 	buildLocationMap(mapCorrection, mapLocation, allLocation);
 
 	const table = (data) => {
-		return buildTable(
-			data.company,
-			processResult({
-				company: data.company,
-				mapLocation: mapLocation,
-				csgAttend: csgAttendCsvToArray(data.csgAttend),
-				vettingResult: vettingResultCsvToArray(data.vettingResult),
-				vettingRequest: vettingRequestCsvToArray(data.vettingRequest),
-			}),
-		);
+		const all = processResult({
+			company: data.company,
+			mapLocation: mapLocation,
+			csgAttend: csgAttendCsvToArray(data.csgAttend),
+			vettingResult: vettingResultCsvToArray(data.vettingResult),
+			vettingRequest: vettingRequestCsvToArray(data.vettingRequest),
+		}).sort((a, b) => {
+			return (
+				a.location.localeCompare(b.location) ||
+				b.csg.localeCompare(a.csg) ||
+				a.name.localeCompare(b.name)
+			);
+		});
+
+		return [
+			buildTable(data.company, all, all),
+			buildTable(
+				data.company,
+				all.filter((i) => {
+					return i.csg.startsWith("HADIR");
+				}),
+				all,
+				"Hadir CSG",
+			),
+			buildTable(
+				data.company,
+				all.filter((i) => {
+					return i.csg.startsWith("BELUM HADIR");
+				}),
+				all,
+				"Belum CSG",
+			),
+		];
 	};
 
 	const startTimer = performance.now();
-	const html = data.item ? data.item.map((d) => table(d)) : [];
+	const html = data.item ? data.item.flatMap((d) => table(d)) : [];
 	console.log(
 		`Prosess siap dalam masa ${(performance.now() - startTimer).toFixed(2)}ms`,
 	);
