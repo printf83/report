@@ -345,56 +345,55 @@ async function generatePDF(selector, filename = "document.pdf") {
 		return;
 	}
 
-	const A4_WIDTH_PX = 2480;
-	const A4_HEIGHT_PX = 3508;
-
-	let pdf = null;
-
-	for (let i = 0; i < pages.length; i++) {
-		const pageElement = pages[i];
-
-		// Measure exact element dimensions in pixels
+	// 1. Process all pages in parallel using JPEG and lower fixed resolution
+	const canvasPromises = pages.map(async (pageElement) => {
 		const width = pageElement.offsetWidth;
 		const height = pageElement.offsetHeight;
 
-		// Convert page wrapper to Canvas using exact element bounds
 		const canvas = await toCanvas(pageElement, {
-			pixelRatio: 2,
+			pixelRatio: 1.5, // 1.5x gives high print clarity with 50% fewer pixels than ratio 2
 			width: width,
 			height: height,
-			canvasWidth: A4_WIDTH_PX,
-			canvasHeight: A4_HEIGHT_PX,
 		});
 
-		if (i === 0) {
-			pdf = new jsPDF({
-				orientation: "portrait",
-				unit: "mm",
-				format: "a4",
-			});
-		} else {
+		// Convert canvas directly to JPEG string (much faster encoding than PNG)
+		const imgData = canvas.toDataURL("image/jpeg", 0.85);
+
+		// Immediate cleanup
+		canvas.width = 0;
+		canvas.height = 0;
+
+		return imgData;
+	});
+
+	const pageImages = await Promise.all(canvasPromises);
+
+	const pdf = new jsPDF({
+		orientation: "portrait",
+		unit: "mm",
+		format: "a4",
+	});
+
+	const pdfWidth = pdf.internal.pageSize.getWidth();
+	const pdfHeight = pdf.internal.pageSize.getHeight();
+
+	pageImages.forEach((imgData, index) => {
+		if (index > 0) {
 			pdf.addPage("a4", "portrait");
 		}
 
-		const pdfWidth = pdf.internal.pageSize.getWidth();
-		const pdfHeight = pdf.internal.pageSize.getHeight();
-
-		// Render canvas image to fill the PDF page exactly
+		// JPEG format with FAST compression setting
 		pdf.addImage(
-			canvas,
-			"PNG",
+			imgData,
+			"JPEG",
 			0,
 			0,
 			pdfWidth,
 			pdfHeight,
-			`page-${i}`,
+			`page-${index}`,
 			"FAST",
 		);
-
-		// Clean up GPU canvas memory
-		canvas.width = 0;
-		canvas.height = 0;
-	}
+	});
 
 	pdf.save(filename);
 }

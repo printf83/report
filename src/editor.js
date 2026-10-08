@@ -547,7 +547,10 @@ const attachDownloadZip = (dlg) => {
 			const zipBlob = await zip.generateAsync({ type: "blob" });
 
 			// 5. Trigger browser download
-			saveAs(zipBlob, "csv.zip");
+			saveAs(
+				zipBlob,
+				`csv report ${new Date().toISOString().split("T")[0].toString().replaceAll("-", "")}.zip`,
+			);
 		});
 	}
 };

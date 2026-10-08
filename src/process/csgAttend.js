@@ -26,7 +26,7 @@ export function csgAttendCsvToArray(csv) {
 					location: cleanParts[2] || null, // Kini mengembalikan null dengan betul jika ,,
 					dateStart: cleanParts[3] || null,
 					dateEnd: cleanParts[4] || null,
-					refNo: cleanParts[5] || null,
+					refNo: cleanParts[5].replace("CSG", "").trim() || null,
 				};
 			} else {
 				console.warn(

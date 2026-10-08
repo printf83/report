@@ -5,16 +5,17 @@ const CURRENT_BROWSER = getBrowserInfo();
 export const TABLE_TITLE_ROWS = () => {
 	switch (CURRENT_BROWSER) {
 		case "firefox":
-			return 18;
+			return 10;
 		default:
-			return 18;
+			return 10;
 	}
 };
+
 export const MAX_ROWS_PER_PAGE = () => {
 	switch (CURRENT_BROWSER) {
 		case "firefox":
 			return 70;
 		default:
-			return 65;
+			return 63;
 	}
 };
