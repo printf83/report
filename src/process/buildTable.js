@@ -7,9 +7,73 @@ import {
 	tdCsg,
 	tdLocation,
 	tdNric,
+	titleDate,
 } from "./util";
 
 const sourceText = `<span class="dark danger">${import.meta.env.VITE_SOURCE_UC}</span>`;
+
+/**
+ * Calculates worker retention, removal, and training scenarios to ensure
+ * Non-CSG workers remain strictly less than 20% (< 20%) of the total workforce.
+ *
+ * @param {number} totalPK - Total number of workers (dataAll.length)
+ * @param {number} totalNoCSG - Number of Non-CSG workers (report.totalWorker)
+ * @param {number} [trainingPercent=0] - Percentage of Non-CSG workers sent to training (0-100)
+ * @returns {Object} Calculated metrics and scenario outcomes
+ */
+function calculateCSGScenarios(totalPK, totalNoCSG, trainingPercent = 0) {
+	const originalCSG = Math.max(0, totalPK - totalNoCSG);
+
+	// 1. Calculate training conversions
+	const boundedTrainingPct = Math.min(100, Math.max(0, trainingPercent));
+	const sentToTraining = Math.round((totalNoCSG * boundedTrainingPct) / 100);
+	const newCSGTotal = originalCSG + sentToTraining;
+
+	// 2. Maximum non-CSG allowed to keep non-CSG ratio strictly < 20%
+	const maxAllowedNoCSG = Math.max(0, Math.ceil(0.25 * newCSGTotal) - 1);
+
+	// 3. Evaluate Non-CSG pool after training
+	const nonCSGAfterTraining = totalNoCSG - sentToTraining;
+
+	// 4. Terminations / Removals required
+	const minToRemove = Math.max(0, nonCSGAfterTraining - maxAllowedNoCSG);
+	const maxToRemove = totalNoCSG; // 100% removal scenario
+
+	const remainingNoCSG = nonCSGAfterTraining - minToRemove;
+	const newTotalPK = newCSGTotal + remainingNoCSG;
+
+	return {
+		totalPK,
+		totalCSG: originalCSG,
+		totalNoCSG,
+		maxAllowedNoCSG,
+
+		// Scenario A: Minimum removal to satisfy < 20% Non-CSG rule
+		minRemovalScenario: {
+			sentToTraining,
+			toRemove: minToRemove,
+			remainingNoCSG,
+			newTotalPK,
+			csgPercentage:
+				newTotalPK > 0
+					? `${((newCSGTotal / newTotalPK) * 100).toFixed(2)}%`
+					: "0.00%",
+			nonCSGPercentage:
+				newTotalPK > 0
+					? `${((remainingNoCSG / newTotalPK) * 100).toFixed(2)}%`
+					: "0.00%",
+		},
+
+		// Scenario B: Best outcome (100% Non-CSG removal)
+		idealScenario: {
+			toRemove: maxToRemove,
+			remainingNoCSG: 0,
+			newTotalPK: originalCSG,
+			csgPercentage: originalCSG > 0 ? "100.00%" : "0.00%",
+			nonCSGPercentage: "0.00%",
+		},
+	};
+}
 
 export function buildTable(company, data, dataAll, title = "all") {
 	// 1. Bina colgroup
@@ -129,7 +193,7 @@ export function buildTable(company, data, dataAll, title = "all") {
 
 	if (title === "all") {
 		tableCaption = `
-            <h1>Senarai Tapisan &amp; CSG PK ${company} di dalam sistem ${import.meta.env.VITE_SOURCE_UC} pada ${new Date().toLocaleDateString("en-GB")}</h1>
+            <h1>Senarai Tapisan &amp; CSG PK ${company} di dalam sistem ${import.meta.env.VITE_SOURCE_UC} pada ${titleDate()}</h1>
             <div>
                 ${spanLabel("Jumlah PK")} 	:	${spanValue(report.totalWorker, "Orang PK", "primary")}<br/>
                 ${spanLabel(`Tapisan <b>(${parseInt((report.vettingPass / report.totalWorker) * 100, 10)}%)</b>`)} 	:   
@@ -151,11 +215,37 @@ export function buildTable(company, data, dataAll, title = "all") {
 
             </div>`;
 	} else {
+		const allDataLength = dataAll.length;
+		const percent = Math.floor((report.totalWorker / allDataLength) * 100);
+
+		let maxAllowedNoCSG = 0;
+		let minToRemove = 0;
+		let maxToRemove = 0;
+
+		if (title === "Belum CSG") {
+			const result = calculateCSGScenarios(
+				allDataLength,
+				report.totalWorker,
+				0,
+			);
+
+			maxAllowedNoCSG = result.maxAllowedNoCSG;
+			minToRemove = result.minRemovalScenario.toRemove;
+			maxToRemove = result.idealScenario.toRemove;
+
+			console.log({
+				company: `${company}`,
+				...result,
+			});
+		}
+
 		tableCaption = `
             <h1>Senarai ${title} PK ${company} di dalam sistem ${import.meta.env.VITE_SOURCE_UC} pada ${new Date().toLocaleDateString("en-GB")}</h1>
             <div>
-                ${spanLabel("Jumlah PK")} 	:	${spanValue(`${report.totalWorker} daripada ${dataAll.length}`, "Orang PK", "primary")}<br/>
-				${spanLabel("Peratus")} 	:	${spanValue(Math.floor((report.totalWorker / dataAll.length) * 100), `% ${title}`, "primary")}<br/>
+                ${spanLabel("Jumlah PK")} 	:	${spanValue(`${report.totalWorker} daripada ${allDataLength}`, "Orang PK", "primary")}<br/>
+				${spanLabel("Peratus")} 	:	${spanValue(percent, `% ${title}`, "primary")}
+												${spanValue(minToRemove, "PK perlu dibuang dari senarai ini", "danger")}
+				
             </div>`;
 	}
 

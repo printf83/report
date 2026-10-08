@@ -142,3 +142,15 @@ export const getBrowserInfo = () => {
 
 	return "unknown";
 };
+
+export function titleDate() {
+	return new Date().toLocaleDateString("en-GB");
+}
+
+export function saveDate() {
+	return new Date()
+		.toISOString()
+		.split("T")[0]
+		.toString()
+		.replaceAll("-", "");
+}

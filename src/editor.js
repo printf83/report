@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 import { buildResult } from "./page";
 import { db } from "./db";
 import { showModal } from "./modal";
+import { saveDate } from "./process/util";
 
 export const attachDlg = (
 	btn,
@@ -547,10 +548,7 @@ const attachDownloadZip = (dlg) => {
 			const zipBlob = await zip.generateAsync({ type: "blob" });
 
 			// 5. Trigger browser download
-			saveAs(
-				zipBlob,
-				`csv report ${new Date().toISOString().split("T")[0].toString().replaceAll("-", "")}.zip`,
-			);
+			saveAs(zipBlob, `csv report ${saveDate()}.zip`);
 		});
 	}
 };

@@ -6,7 +6,7 @@ import { buildTable } from "./process/buildTable";
 import { buildLocationMap, locationCsvToArray } from "./process/location";
 import { buildCorrectionMap, correctionCsvToArray } from "./process/correction";
 import { showModal } from "./modal";
-import { getBrowserInfo } from "./process/util";
+import { getBrowserInfo, saveDate } from "./process/util";
 import { toCanvas } from "html-to-image";
 import jsPDF from "jspdf";
 import { MAX_ROWS_PER_PAGE, TABLE_TITLE_ROWS } from "./const";
@@ -270,7 +270,9 @@ export const attachGroupTableSort = (
 export const attachPrintFn = (btn) => {
 	if (btn) {
 		btn.addEventListener("click", () => {
+			document.title = `${import.meta.env.VITE_SOURCE_LC} report ${saveDate()}`;
 			window.print();
+			document.title = `${import.meta.env.VITE_SOURCE_LC} report`;
 		});
 	}
 };
@@ -357,7 +359,7 @@ async function generatePDF(selector, filename = "document.pdf") {
 		});
 
 		// Convert canvas directly to JPEG string (much faster encoding than PNG)
-		const imgData = canvas.toDataURL("image/jpeg", 0.85);
+		const imgData = canvas.toDataURL("image/jpeg");
 
 		// Immediate cleanup
 		canvas.width = 0;
@@ -412,13 +414,18 @@ export const attachDownloadPdfFn = (btn) => {
 				svgIcon.outerHTML = '<span class="btn-spinner"></span>';
 			}
 
+			// 3. Allow browser to paint the spinner UI before running heavy CPU task
+			await new Promise((resolve) =>
+				requestAnimationFrame(() => setTimeout(resolve, 50)),
+			);
+
 			try {
 				await generatePDF(
 					"#result div.page",
-					`${import.meta.env.VITE_SOURCE_LC} report ${new Date().toISOString().split("T")[0].toString().replaceAll("-", "")}.pdf`,
+					`${import.meta.env.VITE_SOURCE_LC} report ${saveDate()}.pdf`,
 				);
 			} finally {
-				// 3. Restore the original SVG icon and enable the button
+				// 4. Restore the original SVG icon and enable the button
 				const spinner = btn.querySelector(".btn-spinner");
 				if (spinner) {
 					spinner.outerHTML = originalSvg;
