@@ -18,13 +18,13 @@ const sourceText = `<span class="dark danger">${import.meta.env.VITE_SOURCE_UC}<
  *
  * @param {number} totalPK - Total number of workers (dataAll.length)
  * @param {number} totalNoCSG - Number of Non-CSG workers (report.totalWorker)
- * @param {number} [trainingPercent=0] - Percentage of Non-CSG workers sent to training (0-100)
+ * @param {number} [trainingPercent=0] - Percentage of Non-CSG workers sent to training for minRemovalScenario (0-100)
  * @returns {Object} Calculated metrics and scenario outcomes
  */
 function calculateCSGScenarios(totalPK, totalNoCSG, trainingPercent = 0) {
 	const originalCSG = Math.max(0, totalPK - totalNoCSG);
 
-	// 1. Calculate training conversions
+	// 1. Calculate custom training conversions (for Scenario A)
 	const boundedTrainingPct = Math.min(100, Math.max(0, trainingPercent));
 	const sentToTraining = Math.round((totalNoCSG * boundedTrainingPct) / 100);
 	const newCSGTotal = originalCSG + sentToTraining;
@@ -42,13 +42,25 @@ function calculateCSGScenarios(totalPK, totalNoCSG, trainingPercent = 0) {
 	const remainingNoCSG = nonCSGAfterTraining - minToRemove;
 	const newTotalPK = newCSGTotal + remainingNoCSG;
 
+	// =========================================================================
+	// Scenario C: Training Only (Zero Removals / Keep 100% Workforce)
+	// =========================================================================
+	// Target CSG is 80% of totalPK
+	const targetCSGCount = Math.ceil(0.8 * totalPK);
+	const minToTrainToReach80Percent = Math.max(
+		0,
+		targetCSGCount - originalCSG,
+	);
+	const csgAfterRequiredTraining = originalCSG + minToTrainToReach80Percent;
+	const nonCSGAfterRequiredTraining = totalNoCSG - minToTrainToReach80Percent;
+
 	return {
 		totalPK,
 		totalCSG: originalCSG,
 		totalNoCSG,
 		maxAllowedNoCSG,
 
-		// Scenario A: Minimum removal to satisfy < 20% Non-CSG rule
+		// Scenario A: Hybrid (Custom % training + minimum required removal)
 		minRemovalScenario: {
 			sentToTraining,
 			toRemove: minToRemove,
@@ -64,13 +76,33 @@ function calculateCSGScenarios(totalPK, totalNoCSG, trainingPercent = 0) {
 					: "0.00%",
 		},
 
-		// Scenario B: Best outcome (100% Non-CSG removal)
+		// Scenario B: Maximum Removal (Remove 100% Non-CSG)
 		idealScenario: {
 			toRemove: maxToRemove,
 			remainingNoCSG: 0,
 			newTotalPK: originalCSG,
 			csgPercentage: originalCSG > 0 ? "100.00%" : "0.00%",
 			nonCSGPercentage: "0.00%",
+		},
+
+		// Scenario C: Training Only (0 Removals, Convert Non-CSG -> CSG)
+		trainingOnlyScenario: {
+			minToTrain: minToTrainToReach80Percent,
+			trainingPercentageOfNonCSG:
+				totalNoCSG > 0
+					? `${((minToTrainToReach80Percent / totalNoCSG) * 100).toFixed(2)}%`
+					: "0.00%",
+			toRemove: 0,
+			remainingNoCSG: nonCSGAfterRequiredTraining,
+			newTotalPK: totalPK, // Workforce size stays unchanged
+			csgPercentage:
+				totalPK > 0
+					? `${((csgAfterRequiredTraining / totalPK) * 100).toFixed(2)}%`
+					: "0.00%",
+			nonCSGPercentage:
+				totalPK > 0
+					? `${((nonCSGAfterRequiredTraining / totalPK) * 100).toFixed(2)}%`
+					: "0.00%",
 		},
 	};
 }
@@ -221,6 +253,7 @@ export function buildTable(company, data, dataAll, title = "all") {
 		let maxAllowedNoCSG = 0;
 		let minToRemove = 0;
 		let maxToRemove = 0;
+		let minToTrain = 0;
 
 		if (title === "Belum CSG") {
 			const result = calculateCSGScenarios(
@@ -232,6 +265,7 @@ export function buildTable(company, data, dataAll, title = "all") {
 			maxAllowedNoCSG = result.maxAllowedNoCSG;
 			minToRemove = result.minRemovalScenario.toRemove;
 			maxToRemove = result.idealScenario.toRemove;
+			minToTrain = result.trainingOnlyScenario.minToTrain;
 
 			console.log({
 				company: `${company}`,
@@ -244,7 +278,8 @@ export function buildTable(company, data, dataAll, title = "all") {
             <div>
                 ${spanLabel("Jumlah PK")} 	:	${spanValue(`${report.totalWorker} daripada ${allDataLength}`, "Orang PK", "primary")}<br/>
 				${spanLabel("Peratus")} 	:	${spanValue(percent, `% ${title}`, "primary")}
-												${spanValue(minToRemove, "PK perlu dibuang dari senarai ini", "danger")}
+												${spanValue(minToRemove, "PK perlu dibuang", "danger")}
+												${spanValue(minToTrain, "PK perlu kursus", "warning")}
 				
             </div>`;
 	}
